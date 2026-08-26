@@ -10,7 +10,7 @@ NPROC=$(nproc)
 retry() { local n=1; while :; do "$@" && return 0; [ $n -ge 3 ] && return 1; echo "重试 $n/3..."; n=$((n+1)); sleep 15; done; }
 
 echo "[1/9] 克隆内核源码 ($LOS_BRANCH)"
-[ -d kernel ] || retry git clone --depth=1 -b "$LOS_BRANCH" -q \
+[ -d kernel ] || retry git clone --depth=1 -b $LOS_BRANCH -q \
   https://github.com/LineageOS/android_kernel_motorola_sm7325.git kernel
 
 echo "[2/9] 应用补丁"
@@ -40,8 +40,8 @@ else
     "https://raw.githubusercontent.com/LineageOS/android_build/$LOS_BRANCH/soong/cc/config/global.go" \
     | grep -oP 'ClangDefaultVersion = "\K[^"]+')
   echo "  LOS 默认 clang: $CLANG_VER"
-  [ -d ../clang ] || retry git clone --depth=1 -b "$LOS_BRANCH" -q \
-    https://github.com/LineageOS/android_prebuilts_clang_host_linux-x86.git ../clang
+  [ -d ../clang ] || retry git clone --depth=1 -b mirror-goog-llvm-r563880-release -q \
+    https://android.googlesource.com/platform/prebuilts/clang/host/linux-x86 ../clang
   CLANGBIN="$(cd ../clang && pwd)/$CLANG_VER/bin"
 fi
 export PATH="$CLANGBIN:$PATH"
