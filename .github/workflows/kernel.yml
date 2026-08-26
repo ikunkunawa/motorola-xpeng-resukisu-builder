@@ -1,0 +1,40 @@
+name: Build ReSukiSU kernel
+
+on:
+  workflow_dispatch:
+    inputs:
+      boot_url:
+        description: '官方 boot.img 直链（留空则使用仓库变量 BOOT_URL）'
+        required: false
+        type: string
+
+env:
+  LOS_BRANCH: lineage-23.2
+  KSU_REF: main
+
+jobs:
+  build:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 120
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Add swap (ThinLTO 链接内存保险)
+        run: |
+          sudo fallocate -l 8G /mnt/swapfile
+          sudo chmod 600 /mnt/swapfile
+          sudo mkswap /mnt/swapfile
+          sudo swapon /mnt/swapfile
+
+      - name: Build
+        env:
+          BOOT_URL: ${{ inputs.boot_url || vars.BOOT_URL }}
+        run: bash scripts/build.sh
+
+      - name: Upload boot image
+        uses: actions/upload-artifact@v4
+        with:
+          name: boot-ksu
+          path: boot-ksu.img
+          compression-level: 0
