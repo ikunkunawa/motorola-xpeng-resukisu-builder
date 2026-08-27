@@ -36,13 +36,9 @@ echo "[4/9] 工具链 (clang)"
 if [ -n "${CLANG_DIR_OVERRIDE:-}" ]; then
   CLANGBIN="$CLANG_DIR_OVERRIDE/bin"
 else
-  CLANG_VER=$(retry curl -m 30 -fsSL \
-    "https://raw.githubusercontent.com/LineageOS/android_build_soong/$LOS_BRANCH/cc/config/global.go" \
-    | grep -oP 'ClangDefaultVersion = "\K[^"]+')
-  echo "  LOS 默认 clang: $CLANG_VER"
-  [ -d ../clang ] || retry git clone --depth=1 -b mirror-goog-llvm-r563880-release -q \
-    https://android.googlesource.com/platform/prebuilts/clang/host/linux-x86 ../clang
-  CLANGBIN="$(cd ../clang && pwd)/$CLANG_VER/bin"
+  sudo apt-get update -qq
+  sudo apt-get install -y -qq clang lld
+  CLANGBIN="/usr/bin"
 fi
 export PATH="$CLANGBIN:$PATH"
 clang --version | head -1
