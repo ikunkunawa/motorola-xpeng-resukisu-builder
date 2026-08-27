@@ -126,6 +126,6 @@ payload-dumper -o payload_out lineage-23.2-nightly-xpeng.zip
 ## 注意事项
 
 - **BOOT_URL 必须填写**，否则 workflow 会失败
-- 构建耗时约 10-20 分钟（GitHub Actions 4 核）
+- 构建耗时约 20-30 分钟（GitHub Actions 4 核）
 - 产物不含 dtb/dtbo（xpeng 使用 boot header v3，dtb 在单独分区）
 - 官方 boot.img 可通过 OTA zip 链接或提取后的直链提供
