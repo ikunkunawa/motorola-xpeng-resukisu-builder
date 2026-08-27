@@ -5,6 +5,7 @@ LOS_BRANCH="${LOS_BRANCH:-lineage-23.2}"
 KSU_REF="${KSU_REF:-main}"
 BOOT_URL="${BOOT_URL:?必须设置 BOOT_URL (官方 boot.img 直链或本地路径)}"
 REPO_DIR="$(cd "$(dirname "$0")/.." && pwd)"
+WORKDIR="${REPO_DIR}"
 NPROC=$(nproc)
 
 retry() { local n=1; while :; do "$@" && return 0; [ $n -ge 3 ] && return 1; echo "重试 $n/3..."; n=$((n+1)); sleep 15; done; }
