@@ -37,7 +37,7 @@ if [ -n "${CLANG_DIR_OVERRIDE:-}" ]; then
   CLANGBIN="$CLANG_DIR_OVERRIDE/bin"
 else
   CLANG_VER=$(retry curl -m 30 -fsSL \
-    "https://raw.githubusercontent.com/LineageOS/android_build/$LOS_BRANCH/soong/cc/config/global.go" \
+    "https://raw.githubusercontent.com/LineageOS/android_build_soong/$LOS_BRANCH/cc/config/global.go" \
     | grep -oP 'ClangDefaultVersion = "\K[^"]+')
   echo "  LOS 默认 clang: $CLANG_VER"
   [ -d ../clang ] || retry git clone --depth=1 -b mirror-goog-llvm-r563880-release -q \
