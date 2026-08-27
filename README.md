@@ -87,10 +87,19 @@ payload-dumper -o payload_out lineage-23.2-nightly-xpeng.zip
 ```
 ├── .github/workflows/kernel.yml   # GitHub Actions 工作流
 ├── patches/
-│   ├── 0001-fix-werror-unused.patch  # sde_color_processing -Werror 修复
 │   └── 0002-resukisu-hooks.patch     # ReSukiSU 手动钩子 + 内核配置
 ├── scripts/
-│   └── build.sh                   # 构建流水线（克隆、补丁、编译、打包）
+│   ├── build.sh                   # 入口调度器（按序执行 steps/）
+│   ├── lib/common.sh              # 公共环境与工具函数
+│   └── steps/
+│       ├── 01-source.sh           # 克隆内核源码
+│       ├── 02-patches.sh          # 应用补丁（幂等）
+│       ├── 03-ksu.sh              # 集成 ReSukiSU
+│       ├── 04-toolchain.sh        # clang/lld/llvm + 交叉工具链
+│       ├── 05-config.sh           # 生成配置 + KSU 校验
+│       ├── 06-build.sh            # 编译 Image
+│       ├── 07-boot-fetch.sh       # 获取官方 boot.img
+│       └── 08-pack-boot.sh        # 换核合成 boot-ksu.img
 ├── tools/
 │   ├── mkbootimg.py               # AOSP boot 镜像打包
 │   ├── unpack_bootimg.py          # AOSP boot 镜像解包
@@ -99,10 +108,6 @@ payload-dumper -o payload_out lineage-23.2-nightly-xpeng.zip
 ```
 
 ## 补丁说明
-
-### 0001-fix-werror-unused.patch
-
-修复 `techpack/display/msm/sde/sde_color_processing.c` 中 `#ifdef CONFIG_GTP_FOD` 代码块内的 `-Werror=unused-variable` 编译错误，对三个变量添加 `__maybe_unused`。
 
 ### 0002-resukisu-hooks.patch
 
@@ -113,6 +118,10 @@ payload-dumper -o payload_out lineage-23.2-nightly-xpeng.zip
 - `kernel/reboot.c`：reboot 钩子
 - `fs/stat.c`：stat 钩子
 - 内核配置：`CONFIG_KSU=y` + `CONFIG_KSU_MANUAL_HOOK=y`
+
+> 曾有补丁 `0001-fix-werror-unused.patch`（为 `sde_color_processing.c` 的三个变量添加 `__maybe_unused`）。
+> 上游现已将该代码块整体纳入 `#ifdef CONFIG_GTP_FOD`，且所有配置均未启用 `CONFIG_GTP_FOD`，
+> 问题不复存在，该补丁已被移除。
 
 ## 注意事项
 
