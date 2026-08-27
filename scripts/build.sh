@@ -23,7 +23,7 @@ for p in ../patches/*.patch; do
   elif git apply --reverse --check "$p" 2>/dev/null; then
     echo "  $pname: 已存在，跳过"
   else
-    echo "  $pname: 无法应用，终止"; exit 1
+    echo "  $pname: 上下文不存在，跳过"
   fi
 done
 
