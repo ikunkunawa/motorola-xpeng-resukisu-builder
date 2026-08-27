@@ -4,7 +4,7 @@ on:
   workflow_dispatch:
     inputs:
       boot_url:
-        description: '官方 boot.img 直链（留空则使用仓库变量 BOOT_URL）'
+        description: "Official boot.img URL (leave empty to use repo variable BOOT_URL)"
         required: false
         type: string
 
@@ -14,18 +14,18 @@ env:
 
 jobs:
   build:
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-22.04
     timeout-minutes: 120
     steps:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Add swap (ThinLTO 链接内存保险)
+      - name: Add swap
         run: |
-          sudo fallocate -l 8G /mnt/swapfile
-          sudo chmod 600 /mnt/swapfile
-          sudo mkswap /mnt/swapfile
-          sudo swapon /mnt/swapfile
+          sudo fallocate -l 8G /swapfile
+          sudo chmod 600 /swapfile
+          sudo mkswap /swapfile
+          sudo swapon /swapfile
 
       - name: Build
         env:
