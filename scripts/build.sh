@@ -37,7 +37,7 @@ if [ -n "${CLANG_DIR_OVERRIDE:-}" ]; then
   CLANGBIN="$CLANG_DIR_OVERRIDE/bin"
 else
   sudo apt-get update -qq
-  sudo apt-get install -y -qq clang lld
+  sudo apt-get install -y -qq clang lld llvm
   CLANGBIN="/usr/bin"
 fi
 export PATH="$CLANGBIN:$PATH"
