@@ -4,7 +4,7 @@ on:
   workflow_dispatch:
     inputs:
       boot_url:
-        description: "Official boot.img URL (leave empty to use repo variable BOOT_URL)"
+        description: "官方 boot.img 直链（留空则使用仓库变量 BOOT_URL）"
         required: false
         type: string
 
