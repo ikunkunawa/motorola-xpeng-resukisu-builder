@@ -1,6 +1,6 @@
 # Motorola Edge S30 (xpeng) ReSukiSU 内核构建
 
-基于 LineageOS 23.2 的自动化内核 CI，集成 [ReSukiSU](https://github.com/ReSukiSU/ReSukiSU)（KernelSU fork），支持 GitHub Actions 手动触发构建。
+基于 LineageOS 23.2 的自动化内核 CI，集成 [ReSukiSU](https://github.com/ReSukiSU/ReSukiSU)，支持 GitHub Actions 手动触发构建。
 
 ## 特性
 
